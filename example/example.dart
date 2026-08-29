@@ -429,8 +429,8 @@ abstract class AuthMachine {
     }
   }
 
-  /// Adds an event listener that will be notified of changes in the [state] of
-  /// the state machine.
+  /// Adds a listener that will be notified of changes in the [state] of the state
+  /// machine.
   void Function() onStateChange(void Function(AuthState state) listener) {
     return _addListener<AuthState>(_stateListeners, listener);
   }

@@ -74,8 +74,8 @@ final List<void Function({{State}})> _stateListeners = [];
 ''';
 
   static const _templateMethods = r'''
-/// Adds an event listener that will be notified of changes in the [state] of
-/// the state machine.
+/// Adds a listener that will be notified of changes in the [state] of the state
+/// machine.
 void Function() onStateChange(void Function({{State}} state) listener) {
   return _addListener<{{State}}>(_stateListeners, listener);
 }

@@ -1,5 +1,14 @@
 # state_machine_generator
 
+Finite state machine source code generator. Graphviz, Mermaid visualizations. Automatic generation of commands available for different states. FSM generation for any purpose.
+
+[![Pub Package](https://img.shields.io/pub/v/state_machine_generator.svg)](https://pub.dev/packages/state_machine_generator)
+[![Pub Monthly Downloads](https://img.shields.io/pub/dm/state_machine_generator.svg)](https://pub.dev/packages/state_machine_generator/score)
+[![GitHub Issues](https://img.shields.io/github/issues/mezoni/state_machine_generator.svg)](https://github.com/mezoni/state_machine_generator/issues)
+[![GitHub Forks](https://img.shields.io/github/forks/mezoni/state_machine_generator.svg)](https://github.com/mezoni/state_machine_generator/forks)
+[![GitHub Stars](https://img.shields.io/github/stars/mezoni/state_machine_generator.svg)](https://github.com/mezoni/state_machine_generator/stargazers)
+[![GitHub License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://raw.githubusercontent.com/mezoni/state_machine_generator/main/LICENSE)
+
 ## About this software
 
 Finite state machine source code generator. Graphviz, Mermaid visualizations. Automatic generation of commands available for different states. FSM generation for any purpose.

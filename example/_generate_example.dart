@@ -72,7 +72,7 @@ Failure NotLogged
 
   // Example of adding 'terminated' state
   const terminated = 'Terminated';
-  // Excluded states that execute actions at the state machine level.
+  // Exclude states that execute actions at the state machine level.
   final excludedStates = b.transitions.values
       .where((e) => e.source.hasAction)
       .map((e) => e.source.name)

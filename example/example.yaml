@@ -1,0 +1,172 @@
+name: "AuthMachine"
+initialState: "NotLogged"
+eventPrefix: ""
+eventSuffix: "Event"
+eventType: "AuthEvent"
+statePrefix: ""
+stateSuffix: "State"
+stateType: "AuthState"
+globals: |
+  // ignore_for_file: unused_local_variable
+  import '_auth_service.dart';
+states:
+  - name: "NotLogged"
+    action: false
+  - name: "Login"
+    action: true
+  - name: "Login"
+    action: true
+  - name: "Logged"
+    parameters:
+      user: "User"
+      isNew: "bool"
+    action: false
+  - name: "Login"
+    action: true
+  - name: "Failure"
+    parameters:
+      error: "Object"
+    action: false
+  - name: "NotLogged"
+    action: false
+  - name: "Register"
+    action: true
+  - name: "Register"
+    action: true
+  - name: "Logged"
+    parameters:
+      user: "User"
+      isNew: "bool"
+    action: false
+  - name: "Register"
+    action: true
+  - name: "Failure"
+    parameters:
+      error: "Object"
+    action: false
+  - name: "Logged"
+    parameters:
+      user: "User"
+      isNew: "bool"
+    action: false
+  - name: "Logout"
+    action: true
+  - name: "Logout"
+    action: true
+  - name: "NotLogged"
+    action: false
+  - name: "Failure"
+    parameters:
+      error: "Object"
+    action: false
+  - name: "NotLogged"
+    action: false
+  - name: "Failure"
+    parameters:
+      error: "Object"
+    action: false
+  - name: "Terminated"
+    action: false
+  - name: "Logged"
+    parameters:
+      user: "User"
+      isNew: "bool"
+    action: false
+  - name: "Terminated"
+    action: false
+  - name: "NotLogged"
+    action: false
+  - name: "Terminated"
+    action: false
+  - name: "Login"
+    action: true
+  - name: "NotLogged"
+    action: false
+  - name: "Register"
+    action: true
+  - name: "NotLogged"
+    action: false
+  - name: "Logout"
+    action: true
+  - name: "NotLogged"
+    action: false
+events:
+  - name: "Login"
+    parameters:
+      login: "String"
+      password: "String"
+  - name: "Success"
+    parameters:
+      user: "User"
+      isNew: "bool"
+  - name: "Failure"
+    parameters:
+      error: "Object"
+  - name: "Register"
+    parameters:
+      login: "String"
+      password: "String"
+  - name: "Success"
+    parameters:
+      user: "User"
+      isNew: "bool"
+  - name: "Failure"
+    parameters:
+      error: "Object"
+  - name: "Logout"
+    parameters:
+      user: "User?"
+  - name: "LoggedOut"
+  - name: "Retry"
+  - name: "Exit"
+  - name: "Exit"
+  - name: "Exit"
+  - name: "Cancel"
+  - name: "Cancel"
+  - name: "Cancel"
+transitions:
+  - source: "NotLogged"
+    event: "Login"
+    target: "Login"
+  - source: "Login"
+    event: "Success"
+    target: "Logged"
+  - source: "Login"
+    event: "Failure"
+    target: "Failure"
+  - source: "NotLogged"
+    event: "Register"
+    target: "Register"
+  - source: "Register"
+    event: "Success"
+    target: "Logged"
+  - source: "Register"
+    event: "Failure"
+    target: "Failure"
+  - source: "Logged"
+    event: "Logout"
+    target: "Logout"
+  - source: "Logout"
+    event: "LoggedOut"
+    target: "NotLogged"
+  - source: "Failure"
+    event: "Retry"
+    target: "NotLogged"
+  - source: "Failure"
+    event: "Exit"
+    target: "Terminated"
+  - source: "Logged"
+    event: "Exit"
+    target: "Terminated"
+  - source: "NotLogged"
+    event: "Exit"
+    target: "Terminated"
+  - source: "Login"
+    event: "Cancel"
+    target: "NotLogged"
+  - source: "Register"
+    event: "Cancel"
+    target: "NotLogged"
+  - source: "Logout"
+    event: "Cancel"
+    target: "NotLogged"

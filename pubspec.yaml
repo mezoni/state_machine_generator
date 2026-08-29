@@ -1,0 +1,15 @@
+name: state_machine_generator
+description: Finite state machine source code generator. Graphviz, Mermaid visualizations. Automatic generation of commands available for different states. FSM generation for any purpose.
+version: 1.0.0
+repository: https://github.com/mezoni/state_machine_generator
+publish_to: none
+environment:
+  sdk: ^3.0.0
+dependencies:
+  finite_automaton: ^1.0.0
+dev_dependencies:
+  crypto: ^3.0.7
+  lints: ^6.0.0
+  path: ^1.9.1
+  test: ^1.31.2
+  yaml_writer: ^2.1.0

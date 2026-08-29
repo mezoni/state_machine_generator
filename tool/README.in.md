@@ -1,0 +1,80 @@
+# state_machine_generator
+
+## About this software
+
+Finite state machine source code generator. Graphviz, Mermaid visualizations. Automatic generation of commands available for different states. FSM generation for any purpose.
+
+Advantages:
+
+- Easy to model, verify and debug the state machines being developed
+- Strict validation during the building process of the state machine
+- Conversion to `Graphviz` or `Mermaid` visualization tools
+- High transition speed, independent of the number of states
+- Can be used in high-load systems
+- Synchronous automaton for asynchronous operations
+- The `guard` conditions are supported
+
+Disadvantages:
+
+- Source code generation of the state machine required
+- Hierarchically nested states are not supported
+- Orthogonal regions are not supported
+
+The source code generation comes from special configuration classes.  
+Creating configuration classes is possible directly or by converting from other formats.  
+
+## Modeling and source code generation
+
+The state machine source code is generated from special configuration classes.  
+List of configuration classes:
+
+- `Event`
+- `State`
+- `StateMachine`
+- `Transition`
+
+These classes are very primitive and the understanding of their meaning can be found in the description of these classes.  
+State machine modeling can be done directly using these classes or using various convenient tools at the discretion of the developer. For example, `StateMachineBuilder`, `StatePathChecker` or other self-written ones.
+
+The `StateMachineGenerator` class is intended for generating source code of the state machine.
+
+Theoretically, modeling can be performed in visual development environments with subsequent transformation.  
+At the moment, this software does not provide any converters for such purposes.
+
+## Example
+
+An example of a simple state machine model can be found in the `example` directory.  
+
+State machine diagram
+
+![State machine diagram](./example/example.png)
+
+[Graphviz example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.dot)
+
+```txt
+{{example/example.dot}}
+```
+
+[Mermaid  example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.mermaid)
+
+```txt
+{{example/example.mermaid}}
+```
+
+[An example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_run_example.dart)
+
+```dart
+{{example/_run_example.dart}}
+```
+
+[An example of generating a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_generate_example.dart)
+
+```dart
+{{example/_generate_example.dart}}
+```
+
+[An example of generated a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/example.dart)
+
+```dart
+{{example/example.dart}}
+```

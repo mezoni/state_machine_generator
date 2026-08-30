@@ -70,7 +70,86 @@ State machine diagram
 {{example/example.mermaid}}
 ```
 
-[An example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_run_example.dart)
+[Simulation example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_use_example.dart)
+
+```dart
+{{example/_use_example.dart}}
+```
+
+Result of simulation:
+
+```txt
+State 'NotLogged' not changed
+User: null
+SEND_EVENT: Login
+----------------------------------------
+State: Login
+Logging...
+----------------------------------------
+State: Failure
+Error: Bad state: Invalid login or password
+User: null
+SEND_EVENT: Retry
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Register
+----------------------------------------
+State: Register
+Registering...
+----------------------------------------
+State: Logged
+Hello, user! You have successfully registered
+User: user
+SEND_EVENT: Register
+State 'Logged' not changed
+User: user
+SEND_EVENT: Logout
+----------------------------------------
+State: Logout
+Logging out...
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Logout
+State 'NotLogged' not changed
+User: null
+SEND_EVENT: Register
+----------------------------------------
+State: Register
+Registering...
+----------------------------------------
+State: Failure
+Error: Bad state: User 'user' already exists
+User: null
+SEND_EVENT: Retry
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Login
+----------------------------------------
+State: Login
+Logging...
+----------------------------------------
+State: Logged
+Hello, user!
+User: user
+SEND_EVENT: Logout
+----------------------------------------
+State: Logout
+Logging out...
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Exit
+----------------------------------------
+State: Terminated
+Good bye
+User: null
+
+```
+
+[CLI example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_run_example.dart)
 
 ```dart
 {{example/_run_example.dart}}

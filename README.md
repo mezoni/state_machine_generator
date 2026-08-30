@@ -117,7 +117,233 @@ stateDiagram-v2
 
 ```
 
-[An example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_run_example.dart)
+[Simulation example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_use_example.dart)
+
+```dart
+import 'dart:async';
+
+import '_auth_service.dart';
+import 'example.dart';
+
+void main(List<String> args) {
+  _fsm.onStateChange(_listen);
+
+  final events = [
+    LoginEvent(login: 'user', password: '123'),
+    const RetryEvent(),
+    RegisterEvent(login: 'user', password: '123'),
+    RegisterEvent(login: 'user', password: '123'),
+    LogoutEvent(user: _user),
+    LogoutEvent(user: _user),
+    RegisterEvent(login: 'user', password: '123'),
+    const RetryEvent(),
+    LoginEvent(login: 'user', password: '123'),
+    LogoutEvent(user: _user),
+    const ExitEvent(),
+  ];
+
+  var isStateChanged = false;
+
+  _fsm.onStateChange((state) {
+    isStateChanged = true;
+  });
+
+  Timer.periodic(Duration(seconds: 4), (timer) {
+    if (!isStateChanged) {
+      print("State '${_fsm.state}' not changed");
+    }
+
+    print('User: $_user');
+
+    final index = timer.tick - 1;
+    if (index >= events.length) {
+      timer.cancel();
+      return;
+    }
+
+    isStateChanged = false;
+    final event = events[index];
+    _sendEvent(event);
+  });
+}
+
+final _fsm = _Fsm();
+
+User? _user;
+
+void _listen(AuthState state) {
+  print('-' * 40);
+  print('State: $state');
+  _notifyStateChanged(state);
+  switch (state) {
+    case final FailureState state:
+      print('Error: ${state.error}');
+      break;
+    case final LoggedState state:
+      final isNew = state.isNew;
+      final user = state.user;
+      final text = isNew
+          ? 'Hello, $user! You have successfully registered'
+          : 'Hello, $user!';
+      _user = user;
+      print(text);
+      break;
+    case LoginState():
+      print('Logging...');
+      break;
+    case LogoutState():
+      print('Logging out...');
+      break;
+    case NotLoggedState():
+      _user = null;
+      break;
+    case RegisterState():
+      print('Registering...');
+    case TerminatedState():
+      print('Good bye');
+  }
+}
+
+void _notifyStateChanged(AuthState state) {
+  // Add your logic
+}
+
+void _sendEvent(AuthEvent event) {
+  Timer.run(() {
+    print('SEND_EVENT: $event');
+    _fsm.processEvent(event);
+  });
+}
+
+class _Fsm extends AuthMachine {
+  @override
+  void doLogin(LoginEvent e) {
+    var isCanceled = false;
+    onCancel = () => isCanceled = true;
+    Timer.run(() async {
+      try {
+        final user = await AuthService().login(e.login, e.password);
+        if (!isCanceled) {
+          processEvent(SuccessEvent(user: user, isNew: false));
+        }
+      } catch (e) {
+        if (!isCanceled) {
+          processEvent(FailureEvent(error: e));
+        }
+      }
+    });
+  }
+
+  @override
+  void doLogout(LogoutEvent event) {
+    var isCanceled = false;
+    onCancel = () => isCanceled = true;
+    Timer.run(() async {
+      try {
+        final user = event.user;
+        await AuthService().logout(user);
+      } catch (_) {}
+      if (!isCanceled) {
+        processEvent(LoggedOutEvent());
+      }
+    });
+  }
+
+  @override
+  void doRegister(RegisterEvent event) {
+    var isCanceled = false;
+    onCancel = () => isCanceled = true;
+    Timer.run(() async {
+      try {
+        final user = await AuthService().register(event.login, event.password);
+        if (!isCanceled) {
+          processEvent(SuccessEvent(user: user, isNew: true));
+        }
+      } catch (e) {
+        if (!isCanceled) {
+          processEvent(FailureEvent(error: e));
+        }
+      }
+    });
+  }
+}
+
+```
+
+Result of simulation:
+
+```txt
+State 'NotLogged' not changed
+User: null
+SEND_EVENT: Login
+----------------------------------------
+State: Login
+Logging...
+----------------------------------------
+State: Failure
+Error: Bad state: Invalid login or password
+User: null
+SEND_EVENT: Retry
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Register
+----------------------------------------
+State: Register
+Registering...
+----------------------------------------
+State: Logged
+Hello, user! You have successfully registered
+User: user
+SEND_EVENT: Register
+State 'Logged' not changed
+User: user
+SEND_EVENT: Logout
+----------------------------------------
+State: Logout
+Logging out...
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Logout
+State 'NotLogged' not changed
+User: null
+SEND_EVENT: Register
+----------------------------------------
+State: Register
+Registering...
+----------------------------------------
+State: Failure
+Error: Bad state: User 'user' already exists
+User: null
+SEND_EVENT: Retry
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Login
+----------------------------------------
+State: Login
+Logging...
+----------------------------------------
+State: Logged
+Hello, user!
+User: user
+SEND_EVENT: Logout
+----------------------------------------
+State: Logout
+Logging out...
+----------------------------------------
+State: NotLogged
+User: null
+SEND_EVENT: Exit
+----------------------------------------
+State: Terminated
+Good bye
+User: null
+
+```
+
+[CLI example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_run_example.dart)
 
 ```dart
 import 'dart:async';
@@ -195,11 +421,11 @@ void _onStateChange(AuthState state) {
       break;
     case LoginState():
       print('Logging...');
-      print("This will take 5 seconds");
+      print("This will take 3 seconds");
       break;
     case LogoutState():
       print('Logging out...');
-      print("This will take 5 seconds");
+      print("This will take 3 seconds");
       break;
     case NotLoggedState():
       break;
@@ -898,8 +1124,8 @@ abstract class AuthMachine {
     }
   }
 
-  /// Adds an event listener that will be notified of changes in the [state] of
-  /// the state machine.
+  /// Adds a listener that will be notified of changes in the [state] of the state
+  /// machine.
   void Function() onStateChange(void Function(AuthState state) listener) {
     return _addListener<AuthState>(_stateListeners, listener);
   }

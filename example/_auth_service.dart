@@ -17,12 +17,12 @@ class AuthService {
       _error();
     }
 
-    await Future<void>.delayed(Duration(seconds: 5));
+    await Future<void>.delayed(Duration(seconds: 3));
     return User(login);
   }
 
   Future<void> logout(User? user) async {
-    await Future<void>.delayed(Duration(seconds: 5));
+    await Future<void>.delayed(Duration(seconds: 3));
   }
 
   Future<User> register(String login, String password) async {
@@ -33,7 +33,7 @@ class AuthService {
     final bytes = utf8.encode(password);
     final hash = sha256.convert(bytes).toString();
     _users[login] = hash;
-    await Future<void>.delayed(Duration(seconds: 5));
+    await Future<void>.delayed(Duration(seconds: 3));
     return User(login);
   }
 

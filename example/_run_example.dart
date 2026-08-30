@@ -73,11 +73,11 @@ void _onStateChange(AuthState state) {
       break;
     case LoginState():
       print('Logging...');
-      print("This will take 5 seconds");
+      print("This will take 3 seconds");
       break;
     case LogoutState():
       print('Logging out...');
-      print("This will take 5 seconds");
+      print("This will take 3 seconds");
       break;
     case NotLoggedState():
       break;

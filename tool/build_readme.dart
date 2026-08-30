@@ -7,6 +7,7 @@ void main(List<String> args) {
   final files = [
     '_generate_example.dart',
     '_run_example.dart',
+    '_use_example.dart',
     'example.dot',
     'example.dart',
     'example.mermaid',

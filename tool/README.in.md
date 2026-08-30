@@ -102,6 +102,7 @@ State: Logged
 Hello, user! You have successfully registered
 User: user
 SEND_EVENT: Register
+Valid commands (events): [logout, exit]
 State 'Logged' not changed
 User: user
 SEND_EVENT: Logout
@@ -112,6 +113,7 @@ Logging out...
 State: NotLogged
 User: null
 SEND_EVENT: Logout
+Valid commands (events): [login, register, exit]
 State 'NotLogged' not changed
 User: null
 SEND_EVENT: Register

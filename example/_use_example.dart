@@ -88,7 +88,14 @@ void _notifyStateChanged(AuthState state) {
 
 void _sendEvent(AuthEvent event) {
   Timer.run(() {
+    final name = event.toString().toLowerCase();
+    final commands =
+        _fsm.getCommands(_fsm.state).map((e) => e.name.toLowerCase()).toSet();
     print('SEND_EVENT: $event');
+    if (!commands.contains(name)) {
+      print("Valid commands (events): [${commands.join(', ')}]");
+    }
+
     _fsm.processEvent(event);
   });
 }

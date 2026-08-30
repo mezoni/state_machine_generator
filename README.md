@@ -210,7 +210,14 @@ void _notifyStateChanged(AuthState state) {
 
 void _sendEvent(AuthEvent event) {
   Timer.run(() {
+    final name = event.toString().toLowerCase();
+    final commands =
+        _fsm.getCommands(_fsm.state).map((e) => e.name.toLowerCase()).toSet();
     print('SEND_EVENT: $event');
+    if (!commands.contains(name)) {
+      print("Valid commands (events): [${commands.join(', ')}]");
+    }
+
     _fsm.processEvent(event);
   });
 }
@@ -296,6 +303,7 @@ State: Logged
 Hello, user! You have successfully registered
 User: user
 SEND_EVENT: Register
+Valid commands (events): [logout, exit]
 State 'Logged' not changed
 User: user
 SEND_EVENT: Logout
@@ -306,6 +314,7 @@ Logging out...
 State: NotLogged
 User: null
 SEND_EVENT: Logout
+Valid commands (events): [login, register, exit]
 State 'NotLogged' not changed
 User: null
 SEND_EVENT: Register

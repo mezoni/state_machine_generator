@@ -1,0 +1,85 @@
+name: "DocumentMachine"
+initialState: "Draft"
+eventPrefix: ""
+eventSuffix: "Event"
+eventType: "DocumentEvent"
+statePrefix: ""
+stateSuffix: "State"
+stateType: "DocumentState"
+globals: |
+  // ignore_for_file: unused_element, unused_local_variable
+states:
+  - name: "ChangeRequested"
+    action: false
+  - name: "Draft"
+    action: false
+  - name: "ChangeRequested"
+    action: false
+  - name: "Review"
+    action: false
+  - name: "Declined"
+    action: false
+  - name: "Review"
+    action: false
+  - name: "Draft"
+    action: false
+  - name: "Review"
+    action: false
+  - name: "Draft"
+    action: false
+  - name: "Draft"
+    action: false
+  - name: "Review"
+    action: false
+  - name: "ChangeRequested"
+    action: false
+  - name: "Review"
+    action: false
+  - name: "SubmittedToClient"
+    action: false
+  - name: "SubmittedToClient"
+    action: false
+  - name: "Approved"
+    action: false
+  - name: "SubmittedToClient"
+    action: false
+  - name: "Declined"
+    action: false
+events:
+  - name: "Accept"
+  - name: "Reject"
+  - name: "RestartReview"
+  - name: "BeginReview"
+  - name: "UpdateDocument"
+  - name: "ChangeNeeded"
+  - name: "Submit"
+  - name: "Approve"
+  - name: "Decline"
+transitions:
+  - source: "ChangeRequested"
+    event: "Accept"
+    target: "Draft"
+  - source: "ChangeRequested"
+    event: "Reject"
+    target: "Review"
+  - source: "Declined"
+    event: "RestartReview"
+    target: "Review"
+  - source: "Draft"
+    event: "BeginReview"
+    target: "Review"
+  - source: "Draft"
+    event: "UpdateDocument"
+    target: "Draft"
+  - source: "Review"
+    event: "ChangeNeeded"
+    target: "ChangeRequested"
+  - source: "Review"
+    event: "Submit"
+    target: "SubmittedToClient"
+  - source: "SubmittedToClient"
+    event: "Approve"
+    target: "Approved"
+  - source: "SubmittedToClient"
+    event: "Decline"
+    target: "Declined"

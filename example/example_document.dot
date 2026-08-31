@@ -1,0 +1,17 @@
+digraph DocumentMachine {
+  Draft [ label="Draft()"]
+  ChangeRequested [ label="ChangeRequested()"]
+  ChangeRequested -> Draft [label="Accept()"]
+  Review [ label="Review()"]
+  ChangeRequested -> Review [label="Reject()"]
+  Declined [ label="Declined()"]
+  Declined -> Review [label="RestartReview()"]
+  Draft -> Review [label="BeginReview()"]
+  Draft -> Draft [label="UpdateDocument()"]
+  Review -> ChangeRequested [label="ChangeNeeded()"]
+  SubmittedToClient [ label="SubmittedToClient()"]
+  Review -> SubmittedToClient [label="Submit()"]
+  Approved [ label="Approved()"]
+  SubmittedToClient -> Approved [label="Approve()"]
+  SubmittedToClient -> Declined [label="Decline()"]
+}

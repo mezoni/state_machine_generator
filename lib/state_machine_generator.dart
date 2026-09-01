@@ -359,7 +359,8 @@ void _notify<T>(T event, List<void Function(T)> listeners) {
     final name = stateMachine.name;
     final commandType = stateMachine.commandType;
     writeln(
-        '/// [$commandType] a set of commands that can be used with [$name]');
+      '/// [$commandType] a set of commands that can be used with [$name]',
+    );
     openBlock('enum $commandType {');
     for (var i = 0; i < events.length; i++) {
       final event = events[i];

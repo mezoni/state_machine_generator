@@ -272,6 +272,9 @@ void _notify<T>(T event, List<void Function(T)> listeners) {
         }
 
         stmt('_notify($_varState, _stateListeners)');
+        if (isOpen) {
+          closeBlock();
+        }
       }
     }
 

@@ -682,8 +682,8 @@ Failure NotLogged
   final stateMachine = StateMachine(
     commandType: '${name}Command',
     eventType: '${name}Event',
-    initialState: initialState,
     globals: _globals,
+    initialState: initialState,
     name: '${name}Machine',
     stateType: '${name}State',
     transitions: transitions,

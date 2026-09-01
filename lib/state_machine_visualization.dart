@@ -72,7 +72,7 @@ class StateMachineToGraphvizConverter extends _StateMachineVisualizer {
     buffer.write(' -> ');
     buffer.write(target.name);
     buffer.write(' [label="');
-    buffer.write(label.escapeMermaid);
+    buffer.write(label.escapeGraphviz);
     buffer.writeln('"]');
   }
 }

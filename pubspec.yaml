@@ -8,6 +8,7 @@ dependencies:
   finite_automaton: ^1.0.0
 dev_dependencies:
   crypto: ^3.0.7
+  csv: ^8.0.0
   lints: ^6.0.0
   path: ^1.9.1
   test: ^1.31.2

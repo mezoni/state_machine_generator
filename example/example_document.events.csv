@@ -1,0 +1,10 @@
+name;isCommand;parameters;fullName;description
+Accept;;;;
+Approve;;;;
+BeginReview;;;;
+ChangeNeeded;;;;
+Decline;;;;
+Reject;;;;
+RestartReview;;;;
+Submit;;;;
+UpdateDocument;;;;

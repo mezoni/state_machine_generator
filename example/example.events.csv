@@ -1,0 +1,10 @@
+name;isCommand;parameters;fullName;description
+Cancel;true;;;
+Exit;;;;
+Failure;;error: Object;;
+LoggedOut;;;;
+Login;;login: String, password: String;;
+Logout;;user: User?;;
+Register;;login: String, password: String;;
+Retry;;;;
+Success;;user: User, isNew: bool;;

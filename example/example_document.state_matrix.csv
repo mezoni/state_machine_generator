@@ -1,0 +1,7 @@
+Current/Next;Approved;ChangeRequested;Declined;Draft;Review;SubmittedToClient
+Approved;;;;;;
+ChangeRequested;;;;Accept;Reject;
+Declined;;;;;RestartReview;
+Draft;;;;UpdateDocument;BeginReview;
+Review;;ChangeNeeded;;;;Submit
+SubmittedToClient;Approve;;Decline;;;

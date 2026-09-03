@@ -273,10 +273,22 @@ abstract class AuthMachine {
   /// Returns the current state of the state machine.
   AuthState get state => _state;
 
+  /// Handles an action for the `Login` state.
+  /// Processed events:
+  ///
+  /// - LoginEvent
   void doLogin(LoginEvent event);
 
+  /// Handles an action for the `Register` state.
+  /// Processed events:
+  ///
+  /// - RegisterEvent
   void doRegister(RegisterEvent event);
 
+  /// Handles an action for the `Logout` state.
+  /// Processed events:
+  ///
+  /// - LogoutEvent
   void doLogout(LogoutEvent event);
 
   List<AuthCommand> getCommands(AuthState state) {

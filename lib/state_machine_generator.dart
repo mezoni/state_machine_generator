@@ -425,12 +425,6 @@ void _notify<T>(T event, List<void Function(T)> listeners) {
     final actionType = stateMachine.commandType;
     final stateType = stateMachine.stateType;
     final transitions = stateMachine.transitions;
-    openFunction(
-      name: 'getCommands',
-      returnType: 'List<$actionType>',
-      positional: [(stateType, 'state')],
-    );
-
     final map = <(int, int), (State, List<Transition>)>{};
     for (final entry in transitions.values
         .where((e) => _commands.contains(e.event))
@@ -453,14 +447,21 @@ void _notify<T>(T event, List<void Function(T)> listeners) {
       return$('const [$list]');
     }
 
-    var branches = '';
-    if (map.isNotEmpty) {
-      branches = IfElseBinarySearchGenerator(
-        callback: (entry) => capture(0, () => writeState(entry)),
-        map: map,
-        name: 's',
-      ).generate();
+    if (map.isEmpty) {
+      return;
     }
+
+    final branches = IfElseBinarySearchGenerator(
+      callback: (entry) => capture(0, () => writeState(entry)),
+      map: map,
+      name: 's',
+    ).generate();
+
+    openFunction(
+      name: 'getCommands',
+      returnType: 'List<$actionType>',
+      positional: [(stateType, 'state')],
+    );
 
     declare('s', 'state.\$index');
     writeln(branches);
@@ -512,18 +513,26 @@ void _notify<T>(T event, List<void Function(T)> listeners) {
     for (final entry in map.entries) {
       final target = entry.key;
       final transitions = entry.value;
-      final events = [...transitions.map((e) => e.event)];
-      if (events.length > 1) {
-        throw StateError('''
-Failed to determine state action method signature. Found state transitions via different events.
-Target state: ${target.name}
-Events: ${events.map((e) => e.name).join(',')}''');
+      final events = {...transitions.map((e) => e.event)};
+      var eventType = _getEventType();
+
+      if (events.length == 1) {
+        final event = events.first;
+        eventType = _getTypeOfEvent(event);
       }
 
-      final event = events.first;
-      final eventType = _getTypeOfEvent(event);
       final name = target.name;
       final methodName = 'do$name';
+      writeln("/// Handles an action for the `$name` state.");
+      writeln('/// Processed events:');
+      writeln('///');
+      final eventList = events.toList();
+      eventList.sort((a, b) => a.name.compareTo(b.name));
+      for (final event in eventList) {
+        final eventType = _getTypeOfEvent(event);
+        writeln('/// - $eventType');
+      }
+
       stmt('void $methodName($eventType event)');
       _newline();
     }

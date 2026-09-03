@@ -1,0 +1,10 @@
+source;event;target;guard;action
+ChangeRequested;Accept;Draft;;
+ChangeRequested;Reject;Review;;
+Declined;RestartReview;Review;;
+Draft;BeginReview;Review;;
+Draft;UpdateDocument;Draft;;
+Review;ChangeNeeded;ChangeRequested;;
+Review;Submit;SubmittedToClient;;
+SubmittedToClient;Approve;Approved;;
+SubmittedToClient;Decline;Declined;;

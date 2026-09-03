@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1
+
+- Fixed bugs in `StateMachineGenerator`
+- Added class `StateMachineToEventTableConverter`
+- Added class `StateMachineToStateTableConverter`
+- Added class `StateMachineToStateMatrixTableConverter`
+- Added class `StateMachineToTransitionTableConverter`
+
 ## 1.1.0
 
 - Fixed bugs in `StateMachineGenerator`

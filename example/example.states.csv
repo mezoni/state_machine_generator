@@ -1,0 +1,8 @@
+name;hasAction;parameters
+Failure;;error: Object
+Logged;;user: User, isNew: bool
+Login;true;
+Logout;true;
+NotLogged;;
+Register;true;
+Terminated;;

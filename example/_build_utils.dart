@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:csv/csv.dart';
 import 'package:state_machine_generator/state_machine.dart';
 import 'package:state_machine_generator/state_machine_builder.dart';
 import 'package:state_machine_generator/state_machine_generator.dart';
 import 'package:state_machine_generator/state_machine_to_map_converter.dart';
+import 'package:state_machine_generator/state_machine_to_table_converter.dart';
 import 'package:state_machine_generator/state_machine_visualization.dart';
 import 'package:state_machine_generator/state_path_checker.dart';
 import 'package:yaml_writer/yaml_writer.dart';
@@ -90,10 +92,34 @@ void writeFiles(StateMachine stateMachine, String path) {
     stateMachine: stateMachine,
   ).convert();
 
+  final stateMatrixTable = StateMachineToStateMatrixTableConverter(
+    stateMachine: stateMachine,
+  ).convert();
+
+  final eventTable = StateMachineToEventTableConverter(
+    stateMachine: stateMachine,
+  ).convert();
+
+  final stateTable = StateMachineToStateTableConverter(
+    stateMachine: stateMachine,
+  ).convert();
+
+  final transitionTable = StateMachineToTransitionTableConverter(
+    stateMachine: stateMachine,
+  ).convert();
+
   final writer = YamlWriter();
   final yaml = writer.write(map);
   File('$path.dart').writeAsStringSync(source);
   File('$path.dot').writeAsStringSync(dot);
   File('$path.mermaid').writeAsStringSync(mermaid);
   File('$path.yaml').writeAsStringSync(yaml);
+  File('$path.events.csv').writeAsStringSync(_toCsv(eventTable));
+  File('$path.state_matrix.csv').writeAsStringSync(_toCsv(stateMatrixTable));
+  File('$path.states.csv').writeAsStringSync(_toCsv(stateTable));
+  File('$path.transitions.csv').writeAsStringSync(_toCsv(transitionTable));
+}
+
+String _toCsv(List<List<String>> table) {
+  return CsvEncoder(fieldDelimiter: ';').convert(table);
 }

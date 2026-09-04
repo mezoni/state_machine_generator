@@ -1,14 +1,9 @@
-import 'dart:convert';
-
 import 'state_machine.dart';
 
-String _mapToString2(Map<String, String> map) {
-  if (map.isEmpty) {
-    return '';
-  }
+final _identRegex = RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*$');
 
-  final result = jsonEncode(map);
-  return result;
+bool _isValidIdent(String str) {
+  return _identRegex.hasMatch(str);
 }
 
 String _mapToString(Map<String, String> map) {
@@ -24,12 +19,8 @@ String _mapToString(Map<String, String> map) {
     final entry = entries[i];
     final key = entry.key;
     final value = entry.value;
-    var newKey = key;
-    var newValue = value;
-    newKey = newKey.replaceAll("'", "''");
-    newValue = newValue.replaceAll("'", "''");
-    newKey = "'$newKey'";
-    newValue = "'$newValue'";
+    final newKey = _quote(key);
+    final newValue = _quote(value);
     buffer.write(newKey);
     buffer.write(':');
     buffer.write(newValue);
@@ -40,6 +31,17 @@ String _mapToString(Map<String, String> map) {
 
   buffer.write('}');
   return buffer.toString();
+}
+
+String _quote(String str) {
+  if (_isValidIdent(str)) {
+    return str;
+  }
+
+  var result = str;
+  result = result.replaceAll("'", "''");
+  result = "'$str'";
+  return result;
 }
 
 void _sortTable(List<List<String>> table) {

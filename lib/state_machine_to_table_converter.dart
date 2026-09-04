@@ -1,4 +1,46 @@
+import 'dart:convert';
+
 import 'state_machine.dart';
+
+String _mapToString2(Map<String, String> map) {
+  if (map.isEmpty) {
+    return '';
+  }
+
+  final result = jsonEncode(map);
+  return result;
+}
+
+String _mapToString(Map<String, String> map) {
+  if (map.isEmpty) {
+    return '';
+  }
+
+  // Flow style YAML
+  final buffer = StringBuffer();
+  buffer.write('{');
+  final entries = map.entries.toList();
+  for (var i = 0; i < entries.length; i++) {
+    final entry = entries[i];
+    final key = entry.key;
+    final value = entry.value;
+    var newKey = key;
+    var newValue = value;
+    newKey = newKey.replaceAll("'", "''");
+    newValue = newValue.replaceAll("'", "''");
+    newKey = "'$newKey'";
+    newValue = "'$newValue'";
+    buffer.write(newKey);
+    buffer.write(':');
+    buffer.write(newValue);
+    if (i != entries.length - 1) {
+      buffer.write(',');
+    }
+  }
+
+  buffer.write('}');
+  return buffer.toString();
+}
 
 void _sortTable(List<List<String>> table) {
   table.sort((a, b) {
@@ -39,9 +81,7 @@ class StateMachineToEventTableConverter {
       final isCommand =
           event.isCommand == null ? '' : event.isCommand.toString();
       final name = event.name;
-      final parameters = event.parameters.entries
-          .map((e) => '${e.key}: ${e.value}')
-          .join(', ');
+      final parameters = _mapToString(event.parameters);
       final row = <String>[
         name,
         isCommand,
@@ -138,9 +178,7 @@ class StateMachineToStateTableConverter {
       final state = states[i];
       final name = state.name;
       final hasAction = state.hasAction ? 'true' : '';
-      final parameters = state.parameters.entries
-          .map((e) => '${e.key}: ${e.value}')
-          .join(', ');
+      final parameters = _mapToString(state.parameters);
       final row = <String>[
         name,
         hasAction,
@@ -163,6 +201,7 @@ class StateMachineToTransitionTableConverter {
     final rows = <List<String>>[];
     for (final transition in transitions.values) {
       final action = transition.action;
+      final arguments = _mapToString(transition.arguments);
       final guard = transition.guard;
       final event = transition.event;
       final source = transition.source;
@@ -171,6 +210,7 @@ class StateMachineToTransitionTableConverter {
         source.name,
         event.name,
         target.name,
+        arguments,
         guard ?? '',
         action ?? '',
       ];
@@ -179,7 +219,7 @@ class StateMachineToTransitionTableConverter {
 
     _sortTable(rows);
     final table = [
-      ['source', 'event', 'target', 'guard', 'action'],
+      ['source', 'event', 'target', 'arguments', 'guard', 'action'],
       ...rows,
     ];
 

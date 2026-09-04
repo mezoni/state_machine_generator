@@ -121,5 +121,5 @@ void writeFiles(StateMachine stateMachine, String path) {
 }
 
 String _toCsv(List<List<String>> table) {
-  return CsvEncoder(fieldDelimiter: ';').convert(table);
+  return CsvEncoder().convert(table);
 }

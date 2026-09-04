@@ -1,8 +1,8 @@
-Current/Next;Failure;Logged;Login;Logout;NotLogged;Register;Terminated
-Failure;;;;;Retry;;Exit
-Logged;;;;Logout;;;Exit
-Login;Failure;Success;;;Cancel;;
-Logout;;;;;Cancel;;
-NotLogged;;;Login;;;Register;Exit
-Register;Failure;Success;;;Cancel;;
-Terminated;;;;;;;
+Current/Next,Failure,Logged,Login,Logout,NotLogged,Register,Terminated
+Failure,,,,,Retry,,Exit
+Logged,,,,Logout,,,Exit
+Login,Failure,Success,,,Cancel,,
+Logout,,,,,Cancel,,
+NotLogged,,,Login,,,Register,Exit
+Register,Failure,Success,,,Cancel,,
+Terminated,,,,,,,

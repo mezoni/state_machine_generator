@@ -10,7 +10,11 @@ void main(List<String> args) {
     '_use_example.dart',
     'example.dot',
     'example.dart',
+    'example.events.csv',
     'example.mermaid',
+    'example.states.csv',
+    'example.state_matrix.csv',
+    'example.transitions.csv',
   ];
 
   for (var i = 0; i < files.length; i++) {

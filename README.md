@@ -64,14 +64,14 @@ State machine diagram
 digraph AuthMachine {
   NotLogged [ label="NotLogged()"]
   Login [ label="Login()\naction: doLogin()"]
-  NotLogged -> Login [label="Login(String login\, String password)"]
+  NotLogged -> Login [label="Login(String login, String password)"]
   Logged [ label="Logged(User user, bool isNew)"]
-  Login -> Logged [label="Success(User user\, bool isNew)"]
+  Login -> Logged [label="Success(User user, bool isNew)"]
   Failure [ label="Failure(Object error)"]
   Login -> Failure [label="Failure(Object error)"]
   Register [ label="Register()\naction: doRegister()"]
-  NotLogged -> Register [label="Register(String login\, String password)"]
-  Register -> Logged [label="Success(User user\, bool isNew)"]
+  NotLogged -> Register [label="Register(String login, String password)"]
+  Register -> Logged [label="Success(User user, bool isNew)"]
   Register -> Failure [label="Failure(Object error)"]
   Logout [ label="Logout()\naction: doLogout()"]
   Logged -> Logout [label="Logout(User? user)"]
@@ -88,7 +88,7 @@ digraph AuthMachine {
 
 ```
 
-[Mermaid  example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.mermaid)
+[Mermaid example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.mermaid)
 
 ```txt
 stateDiagram-v2
@@ -115,6 +115,68 @@ stateDiagram-v2
   Register --> NotLogged : Cancel()
   Logout --> NotLogged : Cancel()
 
+```
+
+[Event table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.events.csv)
+
+```txt
+name,isCommand,parameters,fullName,description
+Cancel,true,,,
+Exit,,,,
+Failure,,{error:Object},,
+LoggedOut,,,,
+Login,,"{login:String,password:String}",,
+Logout,,{user:'User?'},,
+Register,,"{login:String,password:String}",,
+Retry,,,,
+Success,,"{user:User,isNew:bool}",,
+```
+
+[State table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.states.csv)
+
+```txt
+name,hasAction,parameters
+Failure,,{error:Object}
+Logged,,"{user:User,isNew:bool}"
+Login,true,
+Logout,true,
+NotLogged,,
+Register,true,
+Terminated,,
+```
+
+[Transitions table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.transitions.csv)
+
+```txt
+source,event,target,arguments,guard,action
+Failure,Exit,Terminated,,,
+Failure,Retry,NotLogged,,,
+Logged,Exit,Terminated,,,
+Logged,Logout,Logout,,,
+Login,Cancel,NotLogged,,,
+Login,Failure,Failure,,,
+Login,Success,Logged,,,
+Logout,Cancel,NotLogged,,,
+Logout,LoggedOut,NotLogged,,,
+NotLogged,Exit,Terminated,,,
+NotLogged,Login,Login,,,
+NotLogged,Register,Register,,,
+Register,Cancel,NotLogged,,,
+Register,Failure,Failure,,,
+Register,Success,Logged,,,
+```
+
+[State matrix table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.state_matrix.csv)
+
+```txt
+Current/Next,Failure,Logged,Login,Logout,NotLogged,Register,Terminated
+Failure,,,,,Retry,,Exit
+Logged,,,,Logout,,,Exit
+Login,Failure,Success,,,Cancel,,
+Logout,,,,,Cancel,,
+NotLogged,,,Login,,,Register,Exit
+Register,Failure,Success,,,Cancel,,
+Terminated,,,,,,,
 ```
 
 [Simulation example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_use_example.dart)
@@ -977,10 +1039,22 @@ abstract class AuthMachine {
   /// Returns the current state of the state machine.
   AuthState get state => _state;
 
+  /// Handles an action for the `Login` state.
+  /// Processed events:
+  ///
+  /// - LoginEvent
   void doLogin(LoginEvent event);
 
+  /// Handles an action for the `Register` state.
+  /// Processed events:
+  ///
+  /// - RegisterEvent
   void doRegister(RegisterEvent event);
 
+  /// Handles an action for the `Logout` state.
+  /// Processed events:
+  ///
+  /// - LogoutEvent
   void doLogout(LogoutEvent event);
 
   List<AuthCommand> getCommands(AuthState state) {

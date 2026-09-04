@@ -64,10 +64,34 @@ State machine diagram
 {{example/example.dot}}
 ```
 
-[Mermaid  example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.mermaid)
+[Mermaid example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.mermaid)
 
 ```txt
 {{example/example.mermaid}}
+```
+
+[Event table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.events.csv)
+
+```txt
+{{example/example.events.csv}}
+```
+
+[State table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.states.csv)
+
+```txt
+{{example/example.states.csv}}
+```
+
+[Transitions table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.transitions.csv)
+
+```txt
+{{example/example.transitions.csv}}
+```
+
+[State matrix table example](https://github.com/mezoni/state_machine_generator/blob/main/example/example.state_matrix.csv)
+
+```txt
+{{example/example.state_matrix.csv}}
 ```
 
 [Simulation example of using a state machine](https://github.com/mezoni/state_machine_generator/blob/main/example/_use_example.dart)
